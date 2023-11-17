@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.module.category" id="libra_sms_management">
+			<field name="name">Libra SMS</field>
+			<field name="description">Nivel de acceso</field>
+			<field name="sequence">10</field>
+		</record>
+
+		<record id="basic" model="res.groups">
+			<field name="name">Basico</field>
+			<field name="category_id" ref="libra_sms_management" />
+		</record>
+
+		<record id="user" model="res.groups">
+			<field name="name">Usuario</field>
+			<field name="category_id" ref="libra_sms_management" />
+			<field name="implied_ids" eval="[(4, ref('basic'))]" />
+		</record>
+
+		<record id="manager" model="res.groups">
+			<field name="name">Administrador</field>
+			<field name="category_id" ref="libra_sms_management" />
+			<field name="implied_ids" eval="[(4, ref('user'))]" />
+		</record>
+
+	</data>
+</openerp>

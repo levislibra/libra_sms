@@ -1,0 +1,82 @@
+<odoo>
+	<data>
+		<!-- view lending.type list and menus -->
+		<record model="ir.ui.view" id="sms_list">
+			<field name="name">Sms list</field>
+			<field name="model">sms.sms</field>
+			<field name="priority" eval="100"/>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="create_date"/>
+					<field name="partner_id"/>
+					<field name="number"/>
+					<field name="state" widget="badge" decoration-warning="state == 'error'" decoration-info="state == 'outgoing'" decoration-success="state == 'sent'" decoration-muted="state == 'canceled'"/>
+					<field name="company_id"/>
+				</tree>
+			</field>
+		</record>
+
+
+		<record model="ir.ui.view" id="sms_search">
+			<field name="name">Sms search</field>
+			<field name="model">sms.sms</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="partner_id"/>
+				</search>
+			</field>
+		</record>
+
+		<!-- inherit sms.sms_tsms_view_form -->
+		<record model="ir.ui.view" id="sms_form">
+			<field name="name">Sms form</field>
+			<field name="model">sms.sms</field>
+			<field name="inherit_id" ref="sms.sms_tsms_view_form"/>
+			<field name="priority" eval="100"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='number']" position="before">
+					<field name="company_id"/>
+					<field name="status" readonly="1"/>
+					<field name="error_message" readonly="1"/>
+				</xpath>
+				<xpath expr="//field[@name='body']" position="replace">
+					<field name="body" string="Message" required="1"/>
+					<div></div><div><field name="body_len_text"/></div>
+				</xpath>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="sms_action">
+			<field name="name">Mensajes de texto</field>
+			<field name="res_model">sms.sms</field>
+			<field name="view_ids" eval="[(5, 0, 0),
+				(0, 0, {'view_mode': 'tree', 'view_id': ref('sms_list')}),
+				(0, 0, {'view_mode': 'form', 'view_id': ref('sms_form')})]" />
+		</record>
+
+		<menuitem id="menu_sms_sms" name="Mensajes" parent="libra_sms" action="sms_action" sequence="0"
+			groups="libra_sms.user"/>
+
+		<!-- Extends sms.sms_composer_view_form -->
+		<record model="ir.ui.view" id="sms_composer_form">
+			<field name="name">Sms form</field>
+			<field name="model">sms.composer</field>
+			<field name="inherit_id" ref="sms.sms_composer_view_form"/>
+			<field name="priority" eval="100"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='body'][1]" position="replace">
+					<field name="body" string="Message" attrs="{'invisible': ['|', ('comment_single_recipient', '=', False), ('recipient_single_valid', '=', True)]}"/>
+					<div attrs="{'invisible': ['|', ('comment_single_recipient', '=', False), ('recipient_single_valid', '=', True)]}"></div>
+					<div attrs="{'invisible': ['|', ('comment_single_recipient', '=', False), ('recipient_single_valid', '=', True)]}"><field name="body_len_text"/></div>
+				</xpath>
+				<xpath expr="//field[@name='body'][2]" position="replace">
+					<field name="body" string="Message" attrs="{'invisible': [('comment_single_recipient', '=', True), ('recipient_single_valid', '=', False)]}" default_focus="1"/>
+					<div attrs="{'invisible': [('comment_single_recipient', '=', True), ('recipient_single_valid', '=', False)]}"></div>
+					<div attrs="{'invisible': [('comment_single_recipient', '=', True), ('recipient_single_valid', '=', False)]}"><field name="body_len_text"/></div>
+				</xpath>
+			</field>
+		</record>
+
+
+	</data>
+</odoo>

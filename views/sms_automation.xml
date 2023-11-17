@@ -1,0 +1,128 @@
+<odoo>
+	<data>
+
+		<record model="ir.ui.view" id="sms_automation_list">
+			<field name="name">Automatización de mensajes de texto</field>
+			<field name="model">base.automation</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name"/>
+					<field name="model_id"/>
+					<field name="active"/>
+					<field name="status" widget="badge" decoration-warning="status == 'draft'" decoration-info="status == 'review'" decoration-success="status == 'approved'"/>
+					<field name="company_id" groups="base.group_multi_company"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="sms_automation_form" model="ir.ui.view">
+			<field name="name">Automatizacion de mensajes de texto</field>
+			<field name="model">base.automation</field>
+			<field name="mode">primary</field>
+			<field name="inherit_id" ref="base.view_server_action_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="/form/header/*" position="before">
+					<button string="Enviar a revisión" name="sms_action_review" type="object" attrs="{'invisible': [('status','!=','draft')]}" class="oe_highlight"
+						confirm="¿Esta seguro que lo desea enviar para su aprobación? Asegurese que este todo cargado antes de enviar, ya que el proceso de aprobación demora 48h aproximadamente."/>
+					<button string="Enviar a aprobado" name="sms_action_approved" type="object" attrs="{'invisible': [('status','!=','review')]}" class="oe_highlight" groups="base.group_system"/>
+					<button string="Enviar a borrador" name="sms_action_draft" type="object" attrs="{'invisible': [('status','not in', ['review','approved'])]}"/>
+					<field name="status" widget="statusbar" readonly="1"/>
+				</xpath>
+				<xpath expr="//button[@name='create_action']" position="replace">
+				</xpath>
+				<xpath expr="//button[@name='unlink_action']" position="replace">
+				</xpath>
+				<xpath expr="//button[@name='run']" position="replace">
+				</xpath>
+				<xpath expr="//field[@name='partner_ids']" position='attributes'>
+					<attribute name="options">{'no_create': True}</attribute>
+				</xpath>
+				<xpath expr="//field[@name='template_id']" position='attributes'>
+					<attribute name="context">{'default_model_id': model_id}</attribute>
+				</xpath>
+				<!-- <xpath expr="//field[@name='state']" position='after'>
+					<field name="sms_template_id" options="{'no_quick_create':True,'no_create_edit':True, 'no_open':True}" required="1"/>
+				</xpath> -->
+				<xpath expr="//page[@name='security']" position='attributes'>
+					<attribute name='invisible'>0</attribute>
+				</xpath>
+				<xpath expr="//group[@name='action_content']" position="inside">
+					<field name="active" widget="boolean_toggle"/>
+					<field name="trigger"/>
+					<field name="trigger_field_ids"
+					options="{'no_open': True, 'no_create': True}"
+					domain="[('model_id', '=', model_id)]"
+					attrs="{'invisible': [('trigger', 'not in', ['on_write', 'on_create_or_write'])]}" widget="many2many_tags"/>
+					<field name="on_change_field_ids" string="Trigger Fields"
+					options="{'no_open': True, 'no_create': True}"
+					domain="[('model_id', '=', model_id)]"
+					attrs="{'invisible': [('trigger', '!=', 'on_change')], 'required': [('trigger', '=', 'on_change')]}"
+					widget='many2many_tags'/>
+					
+					<field name="filter_pre_domain" widget="domain" options="{'model': 'model_name', 'in_dialog': True}"
+					attrs="{'invisible': [('trigger', 'not in', ['on_write', 'on_create_or_write'])]}"/>
+					<field name="filter_domain" widget="domain" options="{'model': 'model_name', 'in_dialog': True}"/>
+					<field name="trg_date_id"
+					options="{'no_open': True, 'no_create': True}"
+					attrs="{'invisible': [('trigger', '!=', 'on_time')], 'required': [('trigger', '=', 'on_time')]}"/>
+					<label for="trg_date_range"
+					attrs="{'invisible': [('trigger', '!=', 'on_time')]}"/>
+					<div class="o_row" attrs="{'invisible': [('trigger', '!=', 'on_time')]}">
+						<field name="trg_date_range" attrs="{'required': [('trigger','=','on_time')]}"/>
+						<field name="trg_date_range_type" attrs="{'required': [('trigger','=','on_time')]}"/>
+					</div>
+					<field name="trg_date_calendar_id"
+					options="{'no_open': True, 'no_create': True}"
+					attrs="{'invisible': ['|', ('trg_date_id','=',False), ('trg_date_range_type', '!=', 'day')]}"/>
+				</xpath>
+				<xpath expr="//group[@name='action_wrapper']" position="after">
+					<div class="alert alert-info" role="alert" attrs="{'invisible': [('trigger', '!=', 'on_time')]}">
+						<field name="least_delay_msg"/>
+					</div>
+				</xpath>
+				<!-- make state readonly -->
+				<xpath expr="//field[@name='state']" position="attributes">
+					<attribute name="readonly">1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='active']" position="attributes">
+					<attribute name="readonly">1</attribute>
+				</xpath>
+			</field>
+		</record>
+		
+		<record model="ir.actions.act_window" id="sms_automation_action">
+			<field name="name">Automatizacion de mensajes de texto</field>
+			<field name="res_model">base.automation</field>
+			<field name="domain">[('company_id', '!=', False), ('state', '=', 'sms'),('active','in',[True,False])]</field>
+			<field name="context">{'default_state': 'sms','default_active': False}</field>
+			<!-- <field name="domain">[('company_id','!=', False)]</field> -->
+			<field name="view_ids" eval="[(5, 0, 0),
+			(0, 0, {'view_mode': 'tree', 'view_id': ref('sms_automation_list')}),
+			(0, 0, {'view_mode': 'form', 'view_id': ref('sms_automation_form')})]" />
+		</record>
+		
+		<menuitem id="libra_sms_automation" name="Automatización de mensajes" 
+			parent="libra_sms" action="sms_automation_action" sequence="60"
+			groups="libra_sms.user"/>
+		
+		<record id="mail_base_automation_sms_review" model="mail.template">
+			<field name="name">Nueva automatización pendiente de aprobación</field>
+			<field name="model_id" ref="libra_sms.model_base_automation"/>
+			<field name="subject">Nueva automatización de SMS pendiente de aprobación</field>
+			<field name="email_from">Libra Lending &lt;{{ object.env.user.email }}&gt;</field>
+			<field name="email_to">levislibra@libra-soft.com</field>
+			<field name="auto_delete" eval="False"/>
+			<field name="description">Nueva automatización de SMS pendiente de aprobación</field>
+			<field name="body_html" type="html">
+				<div>
+					Se registro una nueva automatización de la empresa: <t t-out="object.company_id.name or ''">Empresa</t>,<br/><br/>
+					Template: <t t-out="object.name or ''">Template/00001</t>.<br/>
+					Usuario: <t t-out="object.env.user.name or ''">Usuario</t>.<br/>
+					<br/>Saludos<br/><br/>
+				</div>
+			</field>
+		</record>
+
+
+	</data>
+</odoo>

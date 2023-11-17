@@ -1,0 +1,75 @@
+<odoo>
+	<data>
+
+		<!-- inherit form res company -->
+		<record model="ir.ui.view" id="view_company_form">
+			<field name="name">Compañia libra sms form</field>
+			<field name="model">res.company</field>
+			<field name="inherit_id" ref="libra_lending.view_company_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//page[@name='lending_settings']" position="after">
+					<page string="SMS">
+						<group>
+							<group>
+								<field name="contracted_module" readonly="1"/>
+								<field name="usuario"/>
+								<field name="password"/>
+							</group>
+							<group>
+							</group>
+						</group>
+					</page>
+				</xpath>
+			</field>
+		</record>
+
+		<!-- tree res company settings -->
+		<record model="ir.ui.view" id="company_settings_tree">
+			<field name="name">Compañia libra tree</field>
+			<field name="model">res.company</field>
+			<field name="priority" eval="100"/>
+			<field name="arch" type="xml">
+				<tree delete="false" create="false">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="company_settings_form">
+			<field name="name">res.company</field>
+			<field name="model">res.company</field>
+			<field name="priority" eval="100"/>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="name" readonly="1"/>
+						</group>
+						<group>
+							<group>
+								<field name="contracted_module" readonly="1"/>
+								<field name="usuario"/>
+								<field name="password"/>
+							</group>
+							<group>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="company_settings_action" model="ir.actions.act_window">
+			<field name="name">Configuración de SMS</field>
+			<field name="res_model">res.company</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_ids" eval="[(5, 0, 0),
+				(0, 0, {'view_mode': 'tree', 'view_id': ref('company_settings_tree')}),
+				(0, 0, {'view_mode': 'form', 'view_id': ref('company_settings_form')})]" />
+		</record>
+
+		<menuitem id="menu_sms_settings" name="Configuración" parent="libra_sms" sequence="250" groups="libra_sms.manager"/>
+		<menuitem id="menu_sms_settings_config" name="Configuración general" action="company_settings_action" parent="menu_sms_settings" sequence="1"/>
+
+	</data>
+</odoo>
