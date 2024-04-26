@@ -19,7 +19,7 @@
     'version': '0.1',
 	'license': 'LGPL-3',
     # any module necessary for this one to work correctly
-    'depends': ['base','base_automation','mail','libra_lending','sms','libra_email'],
+    'depends': ['base','libra_base_automation','mail','libra_lending','sms'],
 
     # always loaded
     'data': [
