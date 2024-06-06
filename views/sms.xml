@@ -23,6 +23,9 @@
 			<field name="arch" type="xml">
 				<search>
 					<field name="partner_id"/>
+					<field name="number"/>
+					<field name="state"/>
+					<field name="body"/>
 				</search>
 			</field>
 		</record>
@@ -39,8 +42,14 @@
 					<field name="status" readonly="1"/>
 					<field name="error_message" readonly="1"/>
 				</xpath>
+				<xpath expr="//field[@name='partner_id']" position="attributes">
+					<attribute name="attrs">{'readonly': [('state','!=', 'outgoing')]}</attribute>
+				</xpath>
+				<xpath expr="//field[@name='number']" position="attributes">
+					<attribute name="attrs">{'readonly': [('state','!=', 'outgoing')]}</attribute>
+				</xpath>
 				<xpath expr="//field[@name='body']" position="replace">
-					<field name="body" string="Message" required="1"/>
+					<field name="body" string="Message" required="1" attrs="{'readonly': [('state','!=', 'outgoing')]}"/>
 					<div></div><div><field name="body_len_text"/></div>
 				</xpath>
 			</field>

@@ -2,7 +2,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 
 basic_sms_sms,sms.sms,sms.model_sms_sms,libra_sms.basic,1,1,1,0
 user_sms_sms,sms.sms,sms.model_sms_sms,libra_sms.user,1,1,1,0
-manager_sms_sms,sms.sms,sms.model_sms_sms,libra_sms.manager,1,1,1,1
+manager_sms_sms,sms.sms,sms.model_sms_sms,libra_sms.manager,1,1,1,0
 
 basic_sms_template,sms.template,sms.model_sms_template,libra_sms.basic,1,0,0,0
 user_sms_template,sms.template,sms.model_sms_template,libra_sms.user,1,1,1,0

@@ -17,7 +17,6 @@ class ExtendsSmsApi(models.AbstractModel):
 
 	@api.model
 	def _send_sms_batch(self, messages, company_id):
-		print("_send_sms_batch")
 		""" Send SMS using IAP in batch mode
 
 		:param messages: list of SMS to send, structured as dict [{
@@ -42,7 +41,6 @@ class ExtendsSmsApi(models.AbstractModel):
 
 	@api.model
 	def _send_sms(self, res_id, number, content, company_id):
-		print("_send_sms")
 		""" Send SMS using IAP in batch mode
 
 		:param messages: list of SMS to send, structured as dict [{
@@ -72,25 +70,20 @@ class ExtendsSmsApi(models.AbstractModel):
 	@api.model
 	def _sanitize_phone_number(self, number, country_id):
 		ret = number
-		print("number: ", number)
 		if country_id.name in ['Argentina','México','Colombia']:
 			if len(number) > 10:
 				ret = number[len(number)-10:]
 		if country_id.name == 'Perú':
 			if len(number) > 9:
-				ret = number[len(number)-9:]
-		print("ret: ", ret)
+				ret = number.replace('+51', '').replace(' ', '')
 		return ret
 
 	@api.model
 	def _process_status(self, text, model_id):
-		print("_process_status")
 		resultado = text.split(';')
-		print("resultado: ", resultado)
 		if len(resultado) > 1:
 			status = int(resultado[0])
 			model_id.status = resultado[0]
-			print("status: ", status)
 			if status == 0:
 				model_id.state = 'sent'
 			if status == 1:
@@ -99,5 +92,4 @@ class ExtendsSmsApi(models.AbstractModel):
 				model_id.state = 'error'
 			detalle = resultado[1].split(".")
 			error_message = detalle[0]
-			print("error_message: ", error_message)
 			model_id.error_message = error_message

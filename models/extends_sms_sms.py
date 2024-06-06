@@ -35,38 +35,17 @@ class ExtendsSmsSms(models.Model):
 			if r.status_code == 200:
 				self.env['sms.api']._process_status(r.text, record)
 
+	@api.onchange('partner_id')
+	def _onchange_partner_id(self):
+		if self.partner_id:
+			self.number = self.partner_id.mobile
+
 	@api.onchange('body')
 	def _compute_body_len(self):
 		if self.body:
 			body_len = len(self.body)
 			self.body_len_text = str(body_len) + " caracteres de 160 como maximo."
 			self.body_len = body_len
-
-	# def _send(self, unlink_failed=False, unlink_sent=True, raise_exception=False):
-	# 	""" This method tries to send SMS after checking the number (presence and
-	# 	formatting). """
-	# 	# get str format record.id,record.number,record.body\n from self
-	# 	iap_data = "\n".join(["%s,%s,%s" % (record.id, record.number, record.body) for record in self])
-	# 	iap_results = self.env['sms.api']._send_sms_batch(iap_data, self.company_id)
-	# 	print("iap_results", iap_results)
-	# 	print("iap_results", iap_results.text)
-	# 	if iap_results.status_code != 200:
-	# 		raise ValidationError("Error: " + iap_results.text)
-		# except Exception as e:
-		# 	_logger.info('Sent batch %s SMS: %s: failed with exception %s', len(self.ids), self.ids, e)
-		# 	if raise_exception:
-		# 		raise
-		# 	self._postprocess_iap_sent_sms(
-		# 		[{'res_id': sms.id, 'state': 'server_error'} for sms in self],
-		# 		unlink_failed=unlink_failed, unlink_sent=unlink_sent)
-		# else:
-		# 	_logger.info('Send batch %s SMS: %s: gave %s', len(self.ids), self.ids, iap_results)
-		# 	self._postprocess_iap_sent_sms(iap_results, unlink_failed=unlink_failed, unlink_sent=unlink_sent)
-
-
-# class LibraSms(models.Model):
-# 	_name = 'libra.sms'
-# 	_description = 'Mensaje de texto'
 
 class ExtendsSmsComposer(models.TransientModel):
 	_inherit = 'sms.composer'
