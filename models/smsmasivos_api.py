@@ -55,7 +55,6 @@ class ExtendsSmsApi(models.AbstractModel):
 		}]
 		:raises: normally none
 		"""
-
 		params = {
 			'usuario': company_id.usuario,
 			'clave': company_id.password,
@@ -70,12 +69,16 @@ class ExtendsSmsApi(models.AbstractModel):
 	@api.model
 	def _sanitize_phone_number(self, number, country_id):
 		ret = number
-		if country_id.name in ['Argentina','México','Colombia']:
-			if len(number) > 10:
-				ret = number[len(number)-10:]
-		if country_id.name == 'Perú':
-			if len(number) > 9:
-				ret = number.replace('+51', '').replace(' ', '')
+		ret = ret.replace('+51', '').replace(' ', '')
+		ret = ret.replace('+54', '').replace(' ', '')
+		ret = ret.replace('+52', '').replace(' ', '')
+		ret = ret.replace('+57', '').replace(' ', '')
+		# if country_id.name in ['Argentina','México','Colombia']:
+		# 	if len(number) > 10:
+		# 		ret = number[len(number)-10:]
+		# if country_id.name == 'Perú':
+		# 	if len(number) > 9:
+		# 		ret = number.replace('+51', '').replace(' ', '')
 		return ret
 
 	@api.model
