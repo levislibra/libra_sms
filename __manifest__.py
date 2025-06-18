@@ -31,6 +31,11 @@
 		'views/sms_automation.xml',
 		'views/extends_res_company.xml',
     ],
+    'assets': {
+		'web.assets_backend': [
+			'libra_sms/static/src/css/hide_sms_link.css',
+		],
+	},
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',

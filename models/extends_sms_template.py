@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
-
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 class ExtendsSmsTemplate(models.Model):
 	_inherit = 'sms.template'
@@ -17,3 +17,10 @@ class ExtendsSmsTemplate(models.Model):
 			body_len = len(self.body)
 			self.body_len_text = str(body_len) + " caracteres de 160 como maximo."
 			self.body_len = body_len
+
+	# constraint: body length must be less than or equal to 160 characters
+	@api.constrains('body')
+	def _check_body_length(self):
+		for record in self:
+			if record.body and len(record.body) > 160:
+				raise ValidationError(_("El cuerpo del mensaje no puede tener más de 160 caracteres."))

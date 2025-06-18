@@ -44,13 +44,17 @@
 				</xpath>
 				<xpath expr="//field[@name='partner_id']" position="attributes">
 					<attribute name="attrs">{'readonly': [('state','!=', 'outgoing')]}</attribute>
+					<attribute name="options">{'no_quick_create':True,'no_create_edit':True, 'no_open':True,'no_edit':True,'no_create':True}</attribute>
 				</xpath>
 				<xpath expr="//field[@name='number']" position="attributes">
 					<attribute name="attrs">{'readonly': [('state','!=', 'outgoing')]}</attribute>
 				</xpath>
-				<xpath expr="//field[@name='body']" position="replace">
-					<field name="body" string="Message" required="1" attrs="{'readonly': [('state','!=', 'outgoing')]}"/>
-					<div></div><div><field name="body_len_text"/></div>
+				<xpath expr="//field[@name='body']" position="before">
+					<field name="template_id" options="{'no_quick_create':True,'no_create_edit':True, 'no_open':True,'no_edit':True,'no_create':True}"
+						attrs="{'invisible': [('partner_id','=', False)], 'readonly': [('state', '!=', 'outgoing')]}"/>
+				</xpath>
+				<xpath expr="//field[@name='body']" position="attributes">
+					<attribute name="attrs">{'readonly': [('state','!=', 'outgoing')]}</attribute>
 				</xpath>
 			</field>
 		</record>
@@ -73,15 +77,8 @@
 			<field name="inherit_id" ref="sms.sms_composer_view_form"/>
 			<field name="priority" eval="100"/>
 			<field name="arch" type="xml">
-				<xpath expr="//field[@name='body'][1]" position="replace">
-					<field name="body" string="Message" attrs="{'invisible': ['|', ('comment_single_recipient', '=', False), ('recipient_single_valid', '=', True)]}"/>
-					<div attrs="{'invisible': ['|', ('comment_single_recipient', '=', False), ('recipient_single_valid', '=', True)]}"></div>
-					<div attrs="{'invisible': ['|', ('comment_single_recipient', '=', False), ('recipient_single_valid', '=', True)]}"><field name="body_len_text"/></div>
-				</xpath>
-				<xpath expr="//field[@name='body'][2]" position="replace">
-					<field name="body" string="Message" attrs="{'invisible': [('comment_single_recipient', '=', True), ('recipient_single_valid', '=', False)]}" default_focus="1"/>
-					<div attrs="{'invisible': [('comment_single_recipient', '=', True), ('recipient_single_valid', '=', False)]}"></div>
-					<div attrs="{'invisible': [('comment_single_recipient', '=', True), ('recipient_single_valid', '=', False)]}"><field name="body_len_text"/></div>
+				<xpath expr="//div[field[@name='recipient_single_number_itf']]" position="after">
+					<field name="template_id" options="{'no_create': True, 'no_create_edit': True}" attrs="{'invisible': [('comment_single_recipient', '=', False)]}"/>
 				</xpath>
 			</field>
 		</record>

@@ -1,0 +1,8 @@
+/* Oculta solo el ícono de ayuda con enlace al pricing de SMS */
+.o_sms_count a.fa-info-circle {
+    display: none !important;
+}
+
+.o_mail_add_emoji {
+    display: none !important;
+}
