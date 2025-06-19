@@ -8,8 +8,8 @@
 				<tree>
 					<field name="name"/>
 					<field name="model_id"/>
+					<field name="sms_template_id" string="Plantilla"/>
 					<field name="active" widget="boolean_toggle"/>
-					<field name="company_id" groups="base.group_multi_company"/>
 				</tree>
 			</field>
 		</record>
@@ -20,8 +20,19 @@
 			<field name="mode">primary</field>
 			<field name="inherit_id" ref="base_automation.view_base_automation_form"/>
 			<field name="arch" type="xml">
+				<xpath expr="//field[@name='active']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
 				<xpath expr="//field[@name='state']" position="attributes">
 					<attribute name="readonly">1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='state']" position="after">
+					<div colspan="2" class="alert alert-info" name="alert" role="alert">
+						Defina los dominios y campos de activación antes de activar la automatización.
+						Es recomendable agregar como regla en Antes de actualizar el dominio: <b>Creado el >=</b> que el día actual.
+						Esto eviatará que se envíen correos antiguos.
+					</div>
+					<field name="active" widget="boolean_toggle"/>
 				</xpath>
 			</field>
 		</record>
@@ -29,34 +40,17 @@
 		<record model="ir.actions.act_window" id="sms_automation_action">
 			<field name="name">Automatizacion de mensajes de texto</field>
 			<field name="res_model">base.automation</field>
-			<field name="domain">[('company_id', '!=', False), ('state', '=', 'sms'),('active','in',[True,False])]</field>
+			<field name="domain">[('state', '=', 'sms')]</field>
 			<field name="context">{'default_state': 'sms','default_active': False}</field>
 			<field name="view_ids" eval="[(5, 0, 0),
-			(0, 0, {'view_mode': 'tree', 'view_id': ref('sms_automation_list')}),
-			(0, 0, {'view_mode': 'form', 'view_id': ref('sms_automation_form')})]" />
+				(0, 0, {'view_mode': 'tree', 'view_id': ref('sms_automation_list')}),
+				(0, 0, {'view_mode': 'form', 'view_id': ref('sms_automation_form')})]" />
 		</record>
 		
-		<menuitem id="libra_sms_automation" name="Automatización de mensajes" 
+		<menuitem id="libra_sms_automation" name="Automatizaciónes" 
 			parent="libra_sms" action="sms_automation_action" sequence="60"
-			groups="libra_sms.user"/>
+			groups="libra_sms.manager"/>
 		
-		<record id="mail_base_automation_sms_review" model="mail.template">
-			<field name="name">Nueva automatización pendiente de aprobación</field>
-			<field name="model_id" ref="libra_sms.model_base_automation"/>
-			<field name="subject">Nueva automatización de SMS pendiente de aprobación</field>
-			<field name="email_from">Libra Lending &lt;{{ object.env.user.email }}&gt;</field>
-			<field name="email_to">levislibra@libra-soft.com</field>
-			<field name="auto_delete" eval="False"/>
-			<field name="description">Nueva automatización de SMS pendiente de aprobación</field>
-			<field name="body_html" type="html">
-				<div>
-					Se registro una nueva automatización de la empresa: <t t-out="object.company_id.name or ''">Empresa</t>,<br/><br/>
-					Template: <t t-out="object.name or ''">Template/00001</t>.<br/>
-					Usuario: <t t-out="object.env.user.name or ''">Usuario</t>.<br/>
-					<br/>Saludos<br/><br/>
-				</div>
-			</field>
-		</record>
 
 
 	</data>

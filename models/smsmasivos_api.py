@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _, api, models
-from odoo.addons.iap.tools import iap_tools
 import requests
 
 DEFAULT_ENDPOINT = 'https://iap-sms.odoo.com'

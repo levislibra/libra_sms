@@ -55,7 +55,7 @@
 			sequence="25" groups="libra_sms.user"/>
 
 		<menuitem id="sms_template_menu" name="Plantillas de mensajes" parent="libra_sms" action="sms_template_action" 
-			sequence="50" groups="libra_sms.user"/>
+			sequence="50" groups="libra_sms.manager"/>
 
 	</data>
 </odoo>
