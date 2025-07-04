@@ -11,9 +11,8 @@
 					<page string="SMS">
 						<group>
 							<group>
-								<field name="contracted_module"/>
-								<field name="usuario"/>
-								<field name="password" password="True"/>
+								<field name="sms_usuario"/>
+								<field name="sms_password" password="True"/>
 							</group>
 							<group>
 							</group>
@@ -47,9 +46,8 @@
 						</group>
 						<group>
 							<group>
-								<field name="contracted_module" readonly="1"/>
-								<field name="usuario"/>
-								<field name="password" password="True"/>
+								<field name="sms_usuario"/>
+								<field name="sms_password" password="True"/>
 							</group>
 							<group>
 							</group>

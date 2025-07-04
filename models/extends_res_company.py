@@ -6,7 +6,6 @@ from datetime import timedelta
 class ExtendsResCompany(models.Model):
 	_inherit = 'res.company'
 
-	contracted_module = fields.Boolean(string='Módulo contratado', default=False)
-	usuario = fields.Char('Usuario')
-	password = fields.Char('Clave')
-	
+	sms_usuario = fields.Char('Usuario')
+	sms_password = fields.Char('Clave')
+

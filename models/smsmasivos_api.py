@@ -31,8 +31,8 @@ class ExtendsSmsApi(models.AbstractModel):
 		:raises: normally none
 		"""
 		params = {
-			'usuario': company_id.usuario,
-			'clave': company_id.password,
+			'usuario': company_id.sms_usuario,
+			'clave': company_id.sms_password,
 			'bloque': messages,
 		}
 		r = requests.get(URL_ENVIAR_BLOQUE, params=params)
@@ -55,8 +55,8 @@ class ExtendsSmsApi(models.AbstractModel):
 		:raises: normally none
 		"""
 		params = {
-			'usuario': company_id.usuario,
-			'clave': company_id.password,
+			'usuario': company_id.sms_usuario,
+			'clave': company_id.sms_password,
 			'tos': self._sanitize_phone_number(number, company_id.country_id),
 			'texto': content,
 			'respuestanumerica': 1,
