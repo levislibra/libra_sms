@@ -4,13 +4,13 @@
 		<record id="sms_template_installment_payment_failed" model="sms.template">
 			<field name="name">Aviso de pago observado o fallido</field>
 			<field name="model_id" ref="libra_lending.model_libra_lending_installment_payment"/>
-			<field name="body">Hola {{ object.partner_id.name }}, tu pago de {{ object.lending_id.name }} no se acreditó. Monto: {{ object.amount_payment or object.amount_total }}. Revisá el medio o escribinos. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Hola {{ object.partner_id.name }}, tu pago de {{ object.lending_id.name }} no se acredito. Monto: {{ object.amount_payment or object.amount_total }}. Revisa el medio o escribinos. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_installment_payment_partial" model="sms.template">
 			<field name="name">Aviso de pago parcial</field>
 			<field name="model_id" ref="libra_lending.model_libra_lending_installment_payment"/>
-			<field name="body">Pago parcial registrado para {{ object.lending_id.name }}: {{ object.amount_payment }}. Saldo pendiente: {{ (object.amount_total or 0.0) - (object.amount_payment or 0.0) }}. Podés completar hoy. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Pago parcial registrado para {{ object.lending_id.name }}: {{ object.amount_payment }}. Saldo pendiente: {{ (object.amount_total or 0.0) - (object.amount_payment or 0.0) }}. Podes completar hoy. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_installment_payment_confirmed" model="sms.template">
@@ -22,61 +22,61 @@
 		<record id="sms_template_partner_missing_docs" model="sms.template">
 			<field name="name">Solicitud de documentación faltante</field>
 			<field name="model_id" ref="base.model_res_partner"/>
-			<field name="body">Hola {{ object.name }}, necesitamos la documentación pendiente para seguir con tu crédito. Enviála por este medio o cargala en tu perfil. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Hola {{ object.name }}, necesitamos la documentacion pendiente para seguir con tu credito. Enviala por este medio o cargala en tu perfil. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_partner_update_income" model="sms.template">
 			<field name="name">Recordatorio de actualizar ingresos</field>
 			<field name="model_id" ref="base.model_res_partner"/>
-			<field name="body">Hola {{ object.name }}, actualizá tus ingresos para mantener tu límite. Compartí tu último comprobante o cargalo en el portal. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Hola {{ object.name }}, actualiza tus ingresos para mantener tu limite. Carga tu ultimo comprobante en el portal. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_partner_update_personal_data" model="sms.template">
 			<field name="name">Solicitud de actualización de datos personales</field>
 			<field name="model_id" ref="base.model_res_partner"/>
-			<field name="body">Hola {{ object.name }}, actualizá tus datos personales (domicilio, teléfono, documento) para seguir. Respondé con la info o cargala en tu perfil. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Hola {{ object.name }}, actualiza tus datos personales para seguir. Cargala en tu perfil. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_partner_reminder_work_info" model="sms.template">
 			<field name="name">Recordatorio de completar información laboral</field>
 			<field name="model_id" ref="base.model_res_partner"/>
-			<field name="body">Hola {{ object.name }}, completá tu información laboral para agilizar tu crédito. Podés cargarla en tu perfil o responder este mensaje. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Hola {{ object.name }}, completa tu informacion laboral para agilizar tu credito. Podes cargarla en tu perfil. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_lending_two_installments_left" model="sms.template">
-			<field name="name">Te quedan dos cuotas</field>
+			<field name="name">Te quedan N cuotas</field>
 			<field name="model_id" ref="libra_lending.model_libra_lending"/>
-			<field name="body">Quedan {{ object.data_active_installment_count }} cuotas de tu crédito {{ object.name }}. Próxima: {{ format_date(object.data_next_installment_due_date, date_format='dd/MM/yyyy') }} por {{ object.data_next_installment_due_amount }}. ¡Ya casi! Saludos, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Quedan {{ object.data_active_installment_count }} cuotas de tu credito {{ object.name }}. Proxima: {{ format_date(object.data_next_installment_due_date, date_format='dd/MM/yyyy') }} por {{ object.data_next_installment_due_amount }}. ¡Ya casi! Saludos, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_lending_installment_preventive_reminder" model="sms.template">
 			<field name="name">Recordatorio preventivo de cuota</field>
 			<field name="model_id" ref="account.model_account_move"/>
-			<field name="body">Recordatorio: su cuota nro {{ object.number_installment }} vence {{ format_date(object.invoice_date_due, date_format='dd/MM/yyyy') }}. Importe {{ object.installment_amount_balance }}. Si ya pagaste, ignorá. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Recordatorio: su cuota nro {{ object.number_installment }} vence {{ format_date(object.invoice_date_due, date_format='dd/MM/yyyy') }}. Importe {{ object.installment_amount_balance }}. Si ya pagaste, ignora. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_lending_state_review" model="sms.template">
 			<field name="name">Crédito en revisión</field>
 			<field name="model_id" ref="libra_lending.model_libra_lending"/>
-			<field name="body">Tu crédito {{ object.name }} está en revisión. Validamos tu información y te avisaremos novedades. Gracias por tu paciencia. Saludos, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Tu credito {{ object.name }} esta en revision. Validamos tu informacion y te avisaremos novedades. Gracias por tu paciencia. Saludos, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_lending_renew_offer" model="sms.template">
 			<field name="name">Renová tu crédito</field>
 			<field name="model_id" ref="libra_lending.model_libra_lending"/>
-			<field name="body">Buen historial en {{ object.name }}. Podés renovar tu crédito con nosotros. Escribinos si querés un nuevo monto o renovar. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Buen historial en {{ object.name }}. Podes renovar tu credito con nosotros. Escribinos si queres un nuevo monto o renovar. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_lending_state_approval" model="sms.template">
 			<field name="name">Crédito en aprobación</field>
 			<field name="model_id" ref="libra_lending.model_libra_lending"/>
-			<field name="body">Tu crédito {{ object.name }} pasó a aprobación. Estamos finalizando la validación y te confirmaremos en breve. Saludos, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Tu credito {{ object.name }} paso a aprobacion. Estamos finalizando la validacion y te confirmaremos en breve. Saludos, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_lending_state_accreditation_pending" model="sms.template">
 			<field name="name">Crédito con acreditación pendiente</field>
 			<field name="model_id" ref="libra_lending.model_libra_lending"/>
-			<field name="body">Su crédito {{ object.name }} fue aprobado y pendiente de acreditación. Monto {{ object.amount }}. Recibirás el desembolso en breve. Saludos, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Su credito {{ object.name }} fue aprobado y pendiente de acreditacion. Monto {{ object.amount }}. Recibiras el desembolso en breve. Saludos, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_lending_state_accredited" model="sms.template">
@@ -88,13 +88,13 @@
 		<record id="sms_template_lending_installment_due_today" model="sms.template">
 			<field name="name">Cuota vence hoy</field>
 			<field name="model_id" ref="account.model_account_move"/>
-			<field name="body">Hoy vence la cuota {{ object.number_installment }} por {{ object.installment_amount_balance }}. Pagá hoy para evitar recargos. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Hoy vence la cuota {{ object.number_installment }} por {{ object.installment_amount_balance }}. Paga hoy para evitar recargos. Gracias, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_lending_installment_overdue" model="sms.template">
 			<field name="name">Cuota vencida</field>
 			<field name="model_id" ref="account.model_account_move"/>
-			<field name="body">Cuota {{ object.number_installment }} venció {{ format_date(object.invoice_date_due, date_format='dd/MM/yyyy') }}. Saldo {{ object.installment_amount_balance }}. Regularizá a la brevedad. Saludos, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">Cuota {{ object.number_installment }} vencio {{ format_date(object.invoice_date_due, date_format='dd/MM/yyyy') }}. Saldo {{ object.installment_amount_balance }}. Regulariza a la brevedad. Saludos, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 		<record id="sms_template_lending_installment_paid" model="sms.template">
@@ -106,7 +106,7 @@
 		<record id="sms_template_lending_state_payed" model="sms.template">
 			<field name="name">Crédito pagado</field>
 			<field name="model_id" ref="libra_lending.model_libra_lending"/>
-			<field name="body">¡Felicitaciones! Tu crédito {{ object.name }} quedó pagado. Gracias por confiar en nosotros. Estamos para tus próximos proyectos. Saludos, {{ object.company_id.name or user.company_id.name }}</field>
+			<field name="body">¡Felicitaciones! Tu credito {{ object.name }} quedo pagado. Gracias por confiar en nosotros. Estamos para tus proximos proyectos. Saludos, {{ object.company_id.name or user.company_id.name }}</field>
 		</record>
 
 	</data>
