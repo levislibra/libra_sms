@@ -40,14 +40,6 @@ class ExtendsSmsSms(models.Model):
 			self.template_id = False
 			self.body = ''
 
-	# # constraint: body length must be less than or equal to 160 characters
-	# @api.constrains('body')
-	# def _check_body_length(self):
-	# 	for record in self:
-	# 		# permitimos un maximo de 200 ya que muchos {{}} ocupan mas caracteres que su valor real
-	# 		if record.body and len(record.body) > 200:
-	# 			raise ValidationError(_("El cuerpo del mensaje no puede tener más de 160 caracteres una vez reemplazado los valores."))
-
 	@api.onchange('template_id')
 	def _onchange_template_id(self):
 		if self.template_id:
@@ -57,7 +49,6 @@ class ExtendsSmsSms(models.Model):
 			)[self.partner_id.id]
 		else:
 			self.body = ''
-			
 
 class ExtendsSmsComposer(models.TransientModel):
 	_inherit = 'sms.composer'

@@ -26,6 +26,7 @@
         'security/user_groups.xml',
         'security/ir.model.access.csv',
         'security/security.xml',
+        'data/sms_templates.xml',
         'views/sms_template.xml',
         'views/sms.xml',
 		'views/sms_automation.xml',
